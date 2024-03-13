@@ -1,18 +1,32 @@
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useEffect } from 'react';
 
 const Test = () => {
+    const [data, setData]: any = useState(null);
+    const [error, setError]: any = useState(null);
+
     useEffect(() => {
-        axios.post("http://localhost:3000/api/test")
-            .then((response) => {
-                console.log(response);
-            });
-    }, []); // empty dependency array means this effect runs only once, on component mount
+        const fetchData = async () => {
+            try {
+                const response = await axios.post(import.meta.env.VITE_TEST_API);
+                setData(response.data);
+            } catch (error) {
+                setError(error);
+            }
+        };
+        
+        fetchData();
+    }, []);
+
+    if (error) {
+        return <p>Error: {error.message}</p>;
+    }
 
     return (
         <>
-            <p>Testing</p>
+            {data ? <p>{data}</p> : <p>Loading...</p>}
         </>
-    )
+    );
 };
+
 export default Test;
