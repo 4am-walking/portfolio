@@ -15,4 +15,4 @@ router.post('/api/auth/verify', middleware.authMiddleware, (req: Request, res: R
 
 router.post('/api/test', testAPI.test);
 
-module.exports = router;
+export default router;

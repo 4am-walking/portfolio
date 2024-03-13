@@ -1,21 +1,12 @@
-import express, { Request, Response, Express } from "express";
-import dotenv from "dotenv";
-import morgan from 'morgan';
-import cors from 'cors';
+import dotenv from 'dotenv';
+import app from './app';
+import db from './config/db.config';
 
 dotenv.config();
 
-const app: Express = express();
 const port = process.env.PORT || 8080;
-const db = require('./config/db.config');
-const authRoutes = require('./routes/auth.routes');
 
-app.use(morgan('dev'));
-app.use(cors());
-app.use(express.json());
-app.use(authRoutes);
-
-app.get('/api/test', async (req: Request, res: Response) => {
+app.get('/api/test', async (req, res) => {
   try {
     const result = await db.query('SELECT * FROM users');
     res.json(result.rows);
@@ -26,5 +17,5 @@ app.get('/api/test', async (req: Request, res: Response) => {
 });
 
 app.listen(port, () => {
-    console.log(`Sever running at http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });

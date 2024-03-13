@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 const db = require('../config/db.config');
 
 exports.signup = async (req: Request, res: Response) => {
@@ -37,7 +37,7 @@ exports.signin = async (req: Request, res: Response) => {
                         {
                             username: username,
                         },
-                        process.env.JWT_SECRET_KEY
+                        (process.env as any).JWT_SECRET_KEY
                     );
                     res.status(200).json({
                         message: "User signed in",
