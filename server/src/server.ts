@@ -1,13 +1,13 @@
 import express, { Request, Response, Express } from "express";
 import dotenv from "dotenv";
 import morgan from 'morgan';
+import cors from 'cors';
 
 dotenv.config();
 
 const app: Express = express();
-const db = require('./config/db.config');
 const port = process.env.PORT || 8080;
-const cors = require('cors');
+const db = require('./config/db.config');
 const authRoutes = require('./routes/auth.routes');
 
 app.use(morgan('dev'));
