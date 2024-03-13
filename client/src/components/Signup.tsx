@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { signup } from '../services/auth.api';
+import { Link } from 'react-router-dom';
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -44,6 +45,7 @@ const Signup = () => {
         <br />
         <button type="submit">Sign Up</button>
       </form>
+        <Link to="/signin">Sign In</Link>
     </div>
   );
 };
