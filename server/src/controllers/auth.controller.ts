@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const db = require('../config/db.config');
 
@@ -14,5 +15,47 @@ exports.signup = async (req: Request, res: Response) => {
     } catch(err) {
         res.status(500).send('Unable to register')
     }
-
 }
+
+exports.signin = async (req: Request, res: Response) => {
+    const { username, password } = req.body;
+    try {
+        const queryResult = await db.query(`SELECT * FROM users WHERE username = $1;`, [username]);
+        const user = queryResult.rows;
+        if (user.length === 0) {
+            res.status(400).json({
+                error: "User is not registered",
+            });
+        } else {
+            bcrypt.compare(password, user[0].password_hash, (err: any, result: boolean) => {
+                if (err) {
+                    res.status(500).json({
+                        error: "Server error",
+                    });
+                } else if (result === true) {
+                    const token = jwt.sign(
+                        {
+                            username: username,
+                        },
+                        process.env.JWT_SECRET_KEY
+                    );
+                    res.status(200).json({
+                        message: "User signed in",
+                        token: token,
+                    });
+                } else {
+                    if (result === false) {
+                        res.status(400).json({
+                            error: "Enter correct password",
+                        });
+                    }
+                }
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            error: "Database error occured",
+        });
+    }
+};
