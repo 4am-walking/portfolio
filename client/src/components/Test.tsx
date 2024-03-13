@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Test = () => {
@@ -8,7 +8,7 @@ const Test = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.post("http://127.0.0.1:3000/api/test");
+                const response = await axios.post(import.meta.env.VITE_TEST_API);
                 setData(response.data);
             } catch (error) {
                 setError(error);
