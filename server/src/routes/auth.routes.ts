@@ -1,9 +1,9 @@
 import { Router, Request, Response } from 'express';
+import middleware from '../middleware/auth.middleware';
+import authController from '../controllers/auth.controller';
+import testAPI from '../controllers/test.api';
 
 const router = Router();
-const authController = require('../controllers/auth.controller');
-const testAPI = require('../controllers/test.api');
-const middleware = require('../middleware/auth.middleware');
 
 router.post('/api/auth/signup', authController.signup);
 

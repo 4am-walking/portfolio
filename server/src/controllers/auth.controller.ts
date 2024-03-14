@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import db from '../config/db.config';
 
-const db = require('../config/db.config');
-
-exports.signup = async (req: Request, res: Response) => {
+const signup = async (req: Request, res: Response) => {
     try {
         const hashedPassword: string = await bcrypt.hash(req.body.password, 10);
         const data: string[] = [req.body.username, req.body.email, hashedPassword];
@@ -17,7 +16,7 @@ exports.signup = async (req: Request, res: Response) => {
     }
 }
 
-exports.signin = async (req: Request, res: Response) => {
+const signin = async (req: Request, res: Response) => {
     const { username, password } = req.body;
     try {
         const queryResult = await db.query(`SELECT * FROM users WHERE username = $1;`, [username]);
@@ -59,3 +58,5 @@ exports.signin = async (req: Request, res: Response) => {
         });
     }
 };
+
+export default { signin, signup };
