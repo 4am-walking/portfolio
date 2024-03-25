@@ -19,7 +19,9 @@ const signup = async (req: Request, res: Response) => {
 const signin = async (req: Request, res: Response) => {
     const { username, password } = req.body;
     try {
-        const queryResult = await db.query(`SELECT * FROM users WHERE username = $1;`, [username]);
+        const queryResult = await db.query(`SELECT * FROM users WHERE username = $1;`, [
+            username,
+        ]);
         const user = queryResult.rows;
         if (user.length === 0) {
             res.status(400).json({
@@ -34,6 +36,7 @@ const signin = async (req: Request, res: Response) => {
                 } else if (result === true) {
                     const token = jwt.sign(
                         {
+                            user_id: user[0].user_id,
                             username: username,
                         },
                         (process.env as any).JWT_SECRET_KEY
