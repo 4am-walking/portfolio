@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
     const authorizationHeader = req.header("Authorization");
 
     if(!authorizationHeader || !authorizationHeader.startsWith("Bearer ")) {
@@ -18,6 +18,15 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
 
     try {
         const decoded = jwt.verify(token, (process.env as any).JWT_SECRET_KEY);
+        const tokenUserID = (decoded as any).user_id;
+
+        if (req.body.user_id != tokenUserID) {
+            return res.status(403).json({
+                success: false,
+                message: "Unauthorized access",
+            });
+        }
+        
         (req as any).user = decoded;
         next();
     } catch (err) {
@@ -26,4 +35,4 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-export default { authMiddleware };
+export default verifyJWT;
