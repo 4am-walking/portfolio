@@ -4,6 +4,7 @@ import Signin from './pages/Signin'
 import Layout from './layout/Layout'
 import Home from './pages/Home'
 import Test from './pages/Test'
+import Grid from './layout/Grid'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/signup" element={<Signup />}/>
           <Route path="/signin" element={<Signin />}/>
           <Route path="/navbar" element={<Layout />}/>
+          <Route path="/grid" element={<Grid />}/>
           <Route path="/test" element={<Test />}/>
         </Routes>
       </BrowserRouter>
